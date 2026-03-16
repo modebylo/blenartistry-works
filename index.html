@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blake D. Lenoir — Blenartistry</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Mono:wght@300;400&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0a0a0a;
+    --gold: #b5943a;
+    --gold-dim: #7a6228;
+    --gold-light: #e8d49a;
+    --cream: #f4f0e8;
+    --warm: #ede8de;
+    --muted: #7a7268;
+    --white: #fdfcfa;
+    --red-accent: #8b2020;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--ink);
+    color: var(--cream);
+    font-family: 'DM Mono', monospace;
+    font-weight: 300;
+    overflow-x: hidden;
+  }
+
+  /* ── GRAIN OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.4;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 20px 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(to bottom, rgba(10,10,10,0.95) 0%, transparent 100%);
+  }
+
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    font-weight: 500;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 36px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-size: 0.65rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--gold); }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 0 60px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 70% 40%, rgba(181,148,58,0.08) 0%, transparent 60%),
+                radial-gradient(ellipse at 20% 80%, rgba(139,32,32,0.06) 0%, transparent 50%),
+                var(--ink);
+  }
+
+  .hero-eyebrow {
+    font-size: 0.62rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 20px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .hero-eyebrow::before {
+    content: '';
+    display: inline-block;
+    width: 40px;
+    height: 1px;
+    background: var(--gold);
+  }
+
+  .hero-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(4rem, 9vw, 8rem);
+    font-weight: 300;
+    line-height: 0.9;
+    letter-spacing: -0.01em;
+    color: var(--white);
+    position: relative;
+  }
+
+  .hero-name em {
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .hero-descriptor {
+    margin-top: 28px;
+    font-size: 0.68rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    max-width: 480px;
+    line-height: 2;
+    position: relative;
+  }
+
+  .hero-cta {
+    margin-top: 48px;
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    position: relative;
+  }
+
+  .btn {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 14px 32px;
+    text-decoration: none;
+    transition: all 0.25s;
+    display: inline-block;
+  }
+
+  .btn-primary {
+    background: var(--gold);
+    color: var(--ink);
+    border: 1px solid var(--gold);
+  }
+
+  .btn-primary:hover {
+    background: transparent;
+    color: var(--gold);
+  }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--muted);
+    border: 1px solid #2a2a2a;
+  }
+
+  .btn-ghost:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+  }
+
+  .hero-scroll {
+    position: absolute;
+    right: 60px;
+    bottom: 80px;
+    writing-mode: vertical-rl;
+    font-size: 0.58rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .hero-scroll::after {
+    content: '';
+    display: block;
+    width: 1px;
+    height: 60px;
+    background: linear-gradient(to bottom, var(--muted), transparent);
+  }
+
+  /* ── SECTION BASE ── */
+  section { position: relative; }
+
+  .section-label {
+    font-size: 0.58rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--gold-dim);
+    margin-bottom: 48px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: #1e1e1e;
+    max-width: 120px;
+  }
+
+  /* ── ABOUT ── */
+  #about {
+    padding: 120px 60px;
+    background: var(--ink);
+  }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.6fr;
+    gap: 80px;
+    align-items: start;
+    max-width: 1200px;
+  }
+
+  .about-left {}
+
+  .about-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3.2rem;
+    font-weight: 300;
+    line-height: 1.05;
+    color: var(--white);
+    margin-bottom: 20px;
+  }
+
+  .about-name span {
+    display: block;
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .about-tags {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 32px;
+  }
+
+  .about-tag {
+    font-size: 0.6rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .about-tag::before {
+    content: '—';
+    color: var(--gold-dim);
+  }
+
+  .about-right {}
+
+  .statement {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.15rem;
+    font-weight: 400;
+    line-height: 1.85;
+    color: #c8c0b0;
+  }
+
+  .statement p + p { margin-top: 1.4em; }
+
+  .statement .closing {
+    font-style: italic;
+    color: var(--gold-light);
+    font-size: 1.25rem;
+    margin-top: 2em;
+    padding-top: 1.5em;
+    border-top: 1px solid #1e1e1e;
+  }
+
+  .about-links {
+    margin-top: 48px;
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  /* ── DIVIDER ── */
+  .divider {
+    height: 1px;
+    background: linear-gradient(to right, transparent, #2a2a2a 20%, #2a2a2a 80%, transparent);
+    margin: 0 60px;
+  }
+
+  /* ── WORKS ── */
+  #works {
+    padding: 120px 60px 80px;
+    background: var(--ink);
+  }
+
+  .works-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 48px;
+    flex-wrap: wrap;
+    gap: 24px;
+  }
+
+  .works-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.4rem;
+    font-weight: 300;
+    color: var(--white);
+  }
+
+  .event-pill {
+    font-size: 0.62rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    border: 1px solid var(--gold-dim);
+    padding: 8px 18px;
+    display: inline-block;
+  }
+
+  /* ── FILTER BAR ── */
+  .filter-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 40px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid #1a1a1a;
+  }
+
+  .filter-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-right: 4px;
+  }
+
+  .filter-btn {
+    background: transparent;
+    border: 1px solid #222;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .filter-btn:hover, .filter-btn.active {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: var(--ink);
+  }
+
+  .filter-sep { width: 1px; height: 18px; background: #222; margin: 0 6px; }
+
+  .filter-select {
+    background: transparent;
+    border: 1px solid #222;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    padding: 6px 12px;
+    cursor: pointer;
+    appearance: none;
+    outline: none;
+  }
+
+  .filter-select option { background: #111; }
+
+  .results-count {
+    margin-left: auto;
+    font-size: 0.6rem;
+    letter-spacing: 0.18em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  /* ── WORKS GRID ── */
+  .works-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 3px;
+  }
+
+  .work-card {
+    background: #111;
+    position: relative;
+    overflow: hidden;
+    cursor: default;
+    transition: transform 0.3s ease;
+  }
+
+  .work-card:hover { transform: translateY(-4px); }
+  .work-card.hidden { display: none; }
+
+  .thumb-wrap {
+    width: 100%;
+    aspect-ratio: 3/4;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .thumb-wrap img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.6s ease;
+    filter: brightness(0.92);
+  }
+
+  .work-card:hover .thumb-wrap img {
+    transform: scale(1.05);
+    filter: brightness(1);
+  }
+
+  .thumb-placeholder {
+    width: 100%; height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #161616 0%, #1c1a17 100%);
+    gap: 12px;
+    padding: 32px;
+  }
+
+  .p-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    font-style: italic;
+    color: #4a4540;
+    text-align: center;
+    line-height: 1.4;
+  }
+
+  .p-label {
+    font-size: 0.55rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #2e2c28;
+  }
+
+  .avail-badge {
+    position: absolute;
+    top: 12px; right: 12px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.55rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+  }
+
+  .badge-yes { background: var(--gold); color: var(--ink); }
+  .badge-sold { background: var(--red-accent); color: #ffd0d0; }
+  .badge-reserved { background: #1e1e1e; color: #888; border: 1px solid #333; }
+  .badge-no { background: #1a1a1a; color: #555; border: 1px solid #222; }
+
+  .work-card.sold .thumb-wrap::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(10,10,10,0.45);
+  }
+
+  .card-body {
+    padding: 18px 20px 22px;
+    border-top: 1px solid #1a1a1a;
+  }
+
+  .card-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    font-weight: 400;
+    color: #d8d0c0;
+    margin-bottom: 4px;
+    line-height: 1.3;
+  }
+
+  .card-medium {
+    font-size: 0.6rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+
+  .card-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+
+  .card-dim { font-size: 0.65rem; color: #4a4540; }
+
+  .card-price {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem;
+    font-weight: 500;
+    color: var(--gold);
+  }
+
+  .card-price-na {
+    font-size: 0.65rem;
+    color: #4a4540;
+    letter-spacing: 0.1em;
+    font-family: 'DM Mono', monospace;
+  }
+
+  .empty-state {
+    grid-column: 1/-1;
+    text-align: center;
+    padding: 80px;
+    display: none;
+  }
+  .empty-state.visible { display: block; }
+  .empty-state p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem;
+    font-style: italic;
+    color: var(--muted);
+  }
+
+  /* ── INSTAGRAM ── */
+  #instagram {
+    padding: 100px 60px;
+    background: #080808;
+    text-align: center;
+  }
+
+  .ig-inner { max-width: 600px; margin: 0 auto; }
+
+  .ig-at {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3.5rem;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--white);
+    margin: 24px 0 16px;
+  }
+
+  .ig-at span { color: var(--gold); }
+
+  .ig-sub {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 40px;
+    line-height: 2;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: #050505;
+    padding: 40px 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    border-top: 1px solid #141414;
+  }
+
+  .foot-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    color: #333;
+    letter-spacing: 0.1em;
+  }
+
+  .foot-links {
+    display: flex;
+    gap: 28px;
+  }
+
+  .foot-links a {
+    font-size: 0.6rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #333;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .foot-links a:hover { color: var(--gold); }
+
+  .foot-expo {
+    font-size: 0.6rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold-dim);
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-eyebrow { animation: fadeUp 0.8s ease 0.2s both; }
+  .hero-name { animation: fadeUp 0.9s ease 0.4s both; }
+  .hero-descriptor { animation: fadeUp 0.9s ease 0.6s both; }
+  .hero-cta { animation: fadeUp 0.9s ease 0.8s both; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    nav { padding: 20px 28px; }
+    .nav-links { gap: 20px; }
+    .hero, #about, #works, #instagram, footer { padding-left: 28px; padding-right: 28px; }
+    .hero { padding-bottom: 60px; }
+    .about-grid { grid-template-columns: 1fr; gap: 48px; }
+    .hero-name { font-size: clamp(3rem, 12vw, 5rem); }
+    .hero-scroll { display: none; }
+    .divider { margin: 0 28px; }
+  }
+
+  @media (max-width: 600px) {
+    .nav-links { display: none; }
+    .works-header { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">Blenartistry</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#works">Works</a></li>
+    <li><a href="#instagram">Instagram</a></li>
+    <li><a href="https://blenartistry.com" target="_blank">Full Site</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-eyebrow">Open Studio — Zhou B Art Center · March 20, 2025</div>
+  <h1 class="hero-name">Blake D.<br><em>Lenoir</em></h1>
+  <p class="hero-descriptor">Contemporary Surrealist &nbsp;·&nbsp; Multidisciplinary Artist &nbsp;·&nbsp; Chicago</p>
+  <div class="hero-cta">
+    <a href="#works" class="btn btn-primary">View Available Works</a>
+    <a href="https://blenartistry.com" target="_blank" class="btn btn-ghost">Full Website</a>
+  </div>
+  <div class="hero-scroll">Scroll</div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-grid">
+    <div class="about-left">
+      <div class="section-label">Artist</div>
+      <h2 class="about-name">Blake D.<span>Lenoir</span></h2>
+      <div class="about-tags">
+        <span class="about-tag">Surrealist Fine Art</span>
+        <span class="about-tag">Public Murals</span>
+        <span class="about-tag">Commissions</span>
+        <span class="about-tag">Youth Mentorship</span>
+        <span class="about-tag">Brand Partnerships</span>
+        <span class="about-tag">Zhou B Resident Artist</span>
+      </div>
+      <div class="about-links">
+        <a href="https://blenartistry.com" target="_blank" class="btn btn-primary">blenartistry.com</a>
+        <a href="https://instagram.com/blenartistry" target="_blank" class="btn btn-ghost">@blenartistry</a>
+      </div>
+    </div>
+    <div class="about-right">
+      <div class="section-label">Statement</div>
+      <div class="statement">
+        <p>Blake D. Lenoir is a contemporary surrealist multidisciplinary artist whose work moves across fine art, public space, and cultural and institutional platforms.</p>
+        <p>His practice spans original paintings, large-scale public murals, commissions, nonprofit work, brand partnerships, and youth mentorship with international reach. The largest scope of Lenoir's work operates inside Black Temporal Surrealism: a visual language where familiar imagery, cartoon distortion, and photorealistic portraiture collide to explore Black identity, emotional intelligence, mental health, and cultural memory through evoking intergenerational conversations.</p>
+        <p>His paintings are distortional entendres—images that hold more than one meaning at once, functioning as an inception point for conversations that matter.</p>
+        <p class="closing">Lenoir's intention reaches beyond resolution.<br>It is recognition—and the quiet, difficult work of imagining something better.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- WORKS -->
+<section id="works">
+  <div class="works-header">
+    <h2 class="works-title">Available Works</h2>
+    <span class="event-pill">Open Studio · March 20 · First Access Before Expo</span>
+  </div>
+
+  <div class="filter-bar">
+    <span class="filter-label">Show</span>
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="yes">Available</button>
+    <button class="filter-btn" data-filter="sold">Sold</button>
+    <button class="filter-btn" data-filter="no">Not Available</button>
+    <div class="filter-sep"></div>
+    <span class="filter-label">Medium</span>
+    <select class="filter-select" id="mediumFilter"><option value="all">All Media</option></select>
+    <div class="filter-sep"></div>
+    <span class="filter-label">Sort</span>
+    <select class="filter-select" id="sortSelect">
+      <option value="default">Default</option>
+      <option value="price-asc">Price: Low → High</option>
+      <option value="price-desc">Price: High → Low</option>
+      <option value="title-asc">Title A–Z</option>
+    </select>
+    <span class="results-count" id="resultsCount"></span>
+  </div>
+
+  <div class="works-grid" id="worksGrid">
+    <div class="empty-state" id="emptyState"><p>No works match the current filter.</p></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- INSTAGRAM -->
+<section id="instagram">
+  <div class="ig-inner">
+    <div class="section-label" style="justify-content:center;">Follow the Work</div>
+    <div class="ig-at"><span>@</span>blenartistry</div>
+    <p class="ig-sub">New work. Studio process. What's next.<br>Follow along on Instagram.</p>
+    <a href="https://instagram.com/blenartistry" target="_blank" class="btn btn-primary">Open Instagram</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="foot-name">Blake D. Lenoir &nbsp;·&nbsp; Blenartistry</div>
+  <div class="foot-links">
+    <a href="https://blenartistry.com" target="_blank">blenartistry.com</a>
+    <a href="https://instagram.com/blenartistry" target="_blank">Instagram</a>
+    <a href="#works">Available Works</a>
+  </div>
+  <div class="foot-expo">Introducing to Expo — acquire now for first access</div>
+</footer>
+
+<script>
+const works = [
+  { id:1, image:"", title:"Prognosis of the Contentious", medium:"Acrylic on Linen", dimensions:'40 × 52"', price:8500, availability:"sold" },
+  { id:2, image:"", title:"Prognosis of the Contentious (Limited Edition of 25)", medium:"Archival Print", dimensions:'19" × 24"', price:500, availability:"yes" },
+  { id:3, image:"", title:"Locomotive Silence", medium:"Acrylic on Unprimed Linen", dimensions:'34" × 33.5"', price:7500, availability:"sold" },
+  { id:4, image:"", title:"Opaque Metropolis", medium:"Oil on Canvas", dimensions:"", price:25000, availability:"no" },
+  { id:5, image:"", title:"A Days Thought | A Worlds Reflection", medium:"Oil on Linen (Framed)", dimensions:'54" × 39"', price:15000, availability:"yes" },
+  { id:6, image:"", title:"The Allegory of Bruce Lee", medium:"Oil on Canvas", dimensions:'60" × 48"', price:15000, availability:"yes" },
+  { id:7, image:"", title:"A Celibate Narwhal in a Dental Dam", medium:"Oil on Linen (Framed)", dimensions:"", price:null, availability:"yes" },
+];
+
+let activeAvail="all", activeMedium="all", activeSort="default";
+
+function buildMediums() {
+  const sel = document.getElementById("mediumFilter");
+  [...new Set(works.map(w=>w.medium).filter(Boolean))].sort().forEach(m => {
+    const o = document.createElement("option"); o.value=m; o.textContent=m; sel.appendChild(o);
+  });
+}
+
+function badgeHTML(a) {
+  const map={yes:["Available","yes"],sold:["Sold","sold"],reserved:["Reserved","reserved"],no:["Not Available","no"]};
+  const [label,cls] = map[a]||[a,a];
+  return `<span class="avail-badge badge-${cls}">${label}</span>`;
+}
+
+function priceHTML(price,avail) {
+  if(avail==="sold") return `<span class="card-price-na">Sold</span>`;
+  if(avail==="no") return `<span class="card-price-na">Not Available</span>`;
+  if(!price) return `<span class="card-price-na">Inquire</span>`;
+  return `<span class="card-price">$${price.toLocaleString()}</span>`;
+}
+
+function thumbHTML(w) {
+  if(w.image) return `<img src="${w.image}" alt="${w.title}" loading="lazy">`;
+  return `<div class="thumb-placeholder"><div class="p-title">${w.title}</div><div class="p-label">Image coming soon</div></div>`;
+}
+
+function renderCards(list) {
+  const grid=document.getElementById("worksGrid"), empty=document.getElementById("emptyState");
+  [...grid.querySelectorAll(".work-card")].forEach(c=>c.remove());
+  empty.classList.toggle("visible", list.length===0);
+  list.forEach(w => {
+    const card=document.createElement("div");
+    card.className=`work-card${w.availability==="sold"?" sold":""}`;
+    card.innerHTML=`<div class="thumb-wrap">${thumbHTML(w)}${badgeHTML(w.availability)}</div><div class="card-body"><div class="card-title">${w.title}</div><div class="card-medium">${w.medium||""}</div><div class="card-meta"><div class="card-dim">${w.dimensions||""}</div>${priceHTML(w.price,w.availability)}</div></div>`;
+    grid.insertBefore(card,empty);
+  });
+  document.getElementById("resultsCount").textContent=`${list.length} work${list.length!==1?"s":""}`;
+}
+
+function getFiltered() {
+  let list=[...works];
+  if(activeAvail!=="all") list=list.filter(w=>w.availability===activeAvail);
+  if(activeMedium!=="all") list=list.filter(w=>w.medium===activeMedium);
+  if(activeSort==="price-asc") list.sort((a,b)=>(a.price||0)-(b.price||0));
+  else if(activeSort==="price-desc") list.sort((a,b)=>(b.price||0)-(a.price||0));
+  else if(activeSort==="title-asc") list.sort((a,b)=>(a.title||"").localeCompare(b.title||""));
+  return list;
+}
+
+function refresh() { renderCards(getFiltered()); }
+
+document.querySelectorAll(".filter-btn").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    document.querySelectorAll(".filter-btn").forEach(b=>b.classList.remove("active"));
+    btn.classList.add("active"); activeAvail=btn.dataset.filter; refresh();
+  });
+});
+document.getElementById("mediumFilter").addEventListener("change",e=>{activeMedium=e.target.value;refresh();});
+document.getElementById("sortSelect").addEventListener("change",e=>{activeSort=e.target.value;refresh();});
+
+buildMediums();
+refresh();
+</script>
+</body>
+</html>
